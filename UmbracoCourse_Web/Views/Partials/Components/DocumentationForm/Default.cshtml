@@ -1,0 +1,35 @@
+﻿@model UmbracoCourse_Web.Models.DocumentationFormModel;
+@using UmbracoCourse_Web.Controllers;
+
+@using (Html.BeginUmbracoForm<DocumentationFormController>("Submit"))
+{
+    @Html.ValidationSummary()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, new {@class="featured-text"})
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BodyText, new {@class="featured-text"})
+        @Html.TextAreaFor(model => model.BodyText, new { id = "doc-body-text", rows = 10, @class = "well editable" })
+        @Html.ValidationMessageFor(model => model.BodyText)
+    </div>
+
+    <div class="form-group">
+        <div style="position:relative;">
+            <a href='javascript:;'>
+                Choose Images...
+                <input type="file" 
+                    style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' 
+                    name="images" 
+                    multiple 
+                    size="40" 
+                    onchange='$("#upload-file-info").html($(this).val());'>
+            </a>
+            &nbsp;
+            <span class='label label-info' id="upload-file-info"></span>
+            <input type="submit" class="btn btn-primary" style="float:right" value="Publish Changes" />
+        </div>
+    </div>
+}

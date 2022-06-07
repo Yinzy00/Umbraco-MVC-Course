@@ -1,0 +1,70 @@
+﻿@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<DocumentationViewModel>
+@inject IMemberManager _memberManager;
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using UmbracoCourse_Web.Models
+@using UmbracoCourse_Web.ViewModels
+@{
+    Layout = "BasicNav.cshtml";
+}
+<section id="single-content" class="bg-white">
+    <div class="container">
+        <div class="section-content">
+            <div class="row align-items-center ">
+                <div class="col-md-2 mt-2 align-self-start">
+                    <ul class="side-nav">
+                        @await Umbraco.RenderMacroAsync("Breadcrumb")
+                        @await Html.PartialAsync("SideNav")
+                    </ul>
+                </div>
+                <div class="col-md-6 mt-4 align-self-start offset-md-1">
+                    @Model.BodyText
+                     @if (_memberManager.IsLoggedIn())
+                    {
+                        <hr />
+                        <a class="btn btn-primary" style="float:right" href="@Model.Url()?altTemplate=Edit">Edit</a>
+                        <button id="doc-history"
+                            class="btn btn-primary"
+                            data-doc-id="@Model.Id">
+                        Show version history
+                    </button>
+  }
+                    <a class="btn btn-primary" style="float:right" href="@Model.Url()?altTemplate=Edit">Edit</a>
+                </div>
+                <div class="col-md-3 mt-4 align-self-start">
+                    @if (Model.RandomApps != null)
+                    {
+                        <h4>Random app(s) of the day! <small>In case you want to document something.</small></h4>
+                        <hr />
+                        foreach (App rApp in Model.RandomApps)
+                        {
+                            <h3>@rApp.app_name</h3>
+                            <p>Author: @rApp.app_author</p>
+                            <p>Version: @rApp.app_version</p>
+                            <p>Id: @rApp.id</p>
+                        }
+                    }
+                    <hr />
+                    <h4>
+                        Images
+                    </h4>
+                    @if (Model.Images != null)
+                    {
+                        foreach (var image in Model.Images)
+                        {
+                            <figure>
+                                <a href="@image.Url()" data-rel="lightcase"><img src="@image.Url()?width=400" alt="" /></a>
+                            </figure>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section BasicNavScripts
+    {
+    <script type="text/javascript" src="~/Scripts/website.js"></script>
+}
